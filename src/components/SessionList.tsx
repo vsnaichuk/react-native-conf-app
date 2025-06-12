@@ -1,19 +1,19 @@
-import React, {useRef, useState} from 'react';
-import {FlatList, Alert} from 'react-native';
-import {useTheme} from '@react-navigation/native';
-import {CustomTheme} from '../res/colors';
-import {connect} from '../data/connect';
-import {ThemedView} from './themed/ThemedView';
-import {ThemedText} from './themed/ThemedText';
-import {addFavorite, removeFavorite} from '../data/sessions/sessions.actions';
-import {AppState} from '../data/state';
-import {Schedule, Session} from '../models/Schedule';
-import SessionListItem from './SessionListItem';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import React, { useRef, useState } from "react";
+import { FlatList, Alert } from "react-native";
+import { useTheme } from "@react-navigation/native";
+import { CustomTheme } from "../res/colors";
+import { connect } from "../data/connect";
+import { ThemedView } from "./themed/ThemedView";
+import { ThemedText } from "./themed/ThemedText";
+import { addFavorite, removeFavorite } from "../data/sessions/sessions.actions";
+import { AppState } from "../data/state";
+import { Schedule, Session } from "../models/Schedule";
+import SessionListItem from "./SessionListItem";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface OwnProps {
   schedule: Schedule;
-  listType: 'all' | 'favorites';
+  listType: "all" | "favorites";
   hide: boolean;
   onSessionPress: (session: Session) => void;
 }
@@ -43,12 +43,12 @@ const SessionList: React.FC<SessionListProps> = ({
   const flatListRef = useRef<FlatList>(null);
 
   const handleAddFavorite = (sessionId: number) => {
-    console.log('Adding favorite:', sessionId);
+    console.log("Adding favorite:", sessionId);
     addFavorite?.(sessionId);
   };
 
   const handleRemoveFavorite = (sessionId: number) => {
-    console.log('Removing favorite:', sessionId);
+    console.log("Removing favorite:", sessionId);
     removeFavorite?.(sessionId);
   };
 
@@ -58,13 +58,14 @@ const SessionList: React.FC<SessionListProps> = ({
 
   if (schedule.groups.length === 0) {
     return (
-      <ThemedView style={{flex: 1}}>
+      <ThemedView style={{ flex: 1 }}>
         <ThemedText
           style={{
             fontSize: 18,
-            fontWeight: '600',
+            fontWeight: "600",
             marginBottom: 8,
-          }}>
+          }}
+        >
           No Sessions Found
         </ThemedText>
       </ThemedView>
@@ -75,22 +76,24 @@ const SessionList: React.FC<SessionListProps> = ({
     item,
     index,
   }: {
-    item: {time: string; sessions: Session[]};
+    item: { time: string; sessions: Session[] };
     index: number;
   }) => (
-    <ThemedView key={`group-${index}`} style={{marginBottom: 16}}>
+    <ThemedView key={`group-${index}`}>
       <ThemedView
         style={{
-          paddingVertical: 8,
+          paddingVertical: 12,
           paddingHorizontal: 16,
-          borderBottomWidth: 1,
-          borderBottomColor: theme.colors.border,
-        }}>
+          backgroundColor: theme.colors.lightGray,
+        }}
+      >
         <ThemedText
           style={{
-            fontSize: 16,
-            fontWeight: '600',
-          }}>
+            fontSize: 20,
+            fontWeight: "600",
+            color: theme.colors.text,
+          }}
+        >
           {item.time}
         </ThemedText>
       </ThemedView>
@@ -110,19 +113,17 @@ const SessionList: React.FC<SessionListProps> = ({
   );
 
   return (
-    <>
-      <FlatList
-        ref={flatListRef}
-        data={schedule.groups}
-        renderItem={renderGroup}
-        keyExtractor={(_, index) => `group-${index}`}
-        style={hide ? {display: 'none'} : undefined}
-        contentContainerStyle={[
-          {flex: 1, backgroundColor: theme.colors.background},
-          {paddingBottom: insets.bottom},
-        ]}
-      />
-    </>
+    <FlatList
+      ref={flatListRef}
+      data={schedule.groups}
+      renderItem={renderGroup}
+      keyExtractor={(_, index) => `group-${index}`}
+      style={hide ? { display: "none" } : undefined}
+      contentContainerStyle={[
+        { backgroundColor: theme.colors.background },
+        { paddingBottom: insets.bottom },
+      ]}
+    />
   );
 };
 

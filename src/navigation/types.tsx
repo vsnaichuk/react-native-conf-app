@@ -10,7 +10,7 @@ export type RootDrawerParamList = {
 };
 
 export type RootStackParamList = {
-  Drawer: NavigatorScreenParams<RootDrawerParamList> | undefined;
+  Home: NavigatorScreenParams<RootDrawerParamList> | undefined;
   BottomTabs: NavigatorScreenParams<BottomTabParams> | undefined;
   Test: { id: string } | undefined;
   Schedule: undefined;

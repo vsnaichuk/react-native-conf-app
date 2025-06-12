@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { useRoute, useTheme } from "@react-navigation/native";
+import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { RouteProp } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/Ionicons";
 import { ThemedView } from "../components/themed/ThemedView";
@@ -18,6 +18,7 @@ import { CustomTheme } from "../res/colors";
 import { addFavorite, removeFavorite } from "../data/sessions/sessions.actions";
 import { Session } from "../models/Schedule";
 import { mockSessions } from "../data/mocks";
+import { NavScreenProp } from "../navigation/types";
 
 interface OwnProps {}
 
@@ -36,6 +37,7 @@ type SessionDetailScreenProps = OwnProps & StateProps & DispatchProps;
 const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
   const { colors } = useTheme() as CustomTheme;
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<NavScreenProp<"SessionDetail">>();
   const route = useRoute<RouteProp<{ params: { id: number } }>>();
   const { id } = route?.params ?? {};
 
@@ -55,10 +57,6 @@ const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
     );
   }
 
-  const sessionClick = (text: string) => {
-    console.log(`Clicked ${text}`);
-  };
-
   const trackColors: Record<string, string> = {
     ionic: colors.primary,
     react: colors.react,
@@ -71,6 +69,19 @@ const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
     documentation: colors.documentation,
     navigation: colors.navigation,
   };
+
+  const actions = [
+    {
+      action: "Speaker",
+      onPress: () => {
+        navigation.navigate("SpeakerDetail", { id: 1 });
+      },
+    },
+    { action: "Add to Calendar", onPress: () => {} },
+    { action: "Mark as Unwatched", onPress: () => {} },
+    { action: "Download Video", onPress: () => {} },
+    { action: "Leave Feedback", onPress: () => {} },
+  ];
 
   return (
     <ScrollView
@@ -120,13 +131,7 @@ const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
           },
         ]}
       >
-        {[
-          "Watch",
-          "Add to Calendar",
-          "Mark as Unwatched",
-          "Download Video",
-          "Leave Feedback",
-        ].map((action, index, array) => (
+        {actions.map(({ action, onPress }, index, array) => (
           <TouchableOpacity
             key={action}
             style={[
@@ -134,7 +139,7 @@ const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
               { borderBottomColor: colors.border },
               index === array.length - 1 && styles.lastActionButton,
             ]}
-            onPress={() => sessionClick(action.toLowerCase())}
+            onPress={onPress}
           >
             {action === "Download Video" ? (
               <ThemedView style={styles.downloadButton}>

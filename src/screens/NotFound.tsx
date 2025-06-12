@@ -13,7 +13,7 @@ export const NotFound = ({
       <Text style={styles.title}>404 Not Found ({route.path})</Text>
       <Button
         variant="filled"
-        onPress={() => navigation.navigate("Drawer", { screen: "BottomTabs" })}
+        onPress={() => navigation.navigate("Home", { screen: "BottomTabs" })}
         style={styles.button}
       >
         Go to home

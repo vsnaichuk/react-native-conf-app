@@ -1,41 +1,43 @@
-import React, {useRef} from 'react';
-import {TouchableOpacity, StyleSheet} from 'react-native';
+import React, { useRef } from "react";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
 import ReanimatedSwipeable, {
   SwipeableMethods,
-} from 'react-native-gesture-handler/ReanimatedSwipeable';
+} from "react-native-gesture-handler/ReanimatedSwipeable";
 import Reanimated, {
   SharedValue,
   useAnimatedStyle,
-} from 'react-native-reanimated';
-import Toast from 'react-native-toast-message';
-import {useTheme} from '@react-navigation/native';
-import {Color, CustomTheme} from '../res/colors';
-import {Session} from '../models/Schedule';
-import {ThemedText} from './themed/ThemedText';
+} from "react-native-reanimated";
+import Toast from "react-native-toast-message";
+import { useTheme } from "@react-navigation/native";
+import { Color, CustomTheme } from "../res/colors";
+import { Session } from "../models/Schedule";
+import { ThemedText } from "./themed/ThemedText";
 
 const RightAction = (props: {
   session: Session;
   prog: SharedValue<number>;
   drag: SharedValue<number>;
-  listType: 'all' | 'favorites';
+  listType: "all" | "favorites";
   addFavoriteSession: () => void;
   removeFavoriteSession: (title: string) => void;
 }) => {
   const theme = useTheme() as CustomTheme;
   const styleAnimation = useAnimatedStyle(() => ({
-    transform: [{translateX: props.drag.value + 100}], // Adjust based on action width
+    transform: [{ translateX: props.drag.value + 100 }], // Adjust based on action width
   }));
 
   return (
     <Reanimated.View style={[styles.rightActions, styleAnimation]}>
-      {props.listType === 'favorites' ? (
+      {props.listType === "favorites" ? (
         <TouchableOpacity
-          style={[styles.actionButton, {backgroundColor: theme.colors.error}]}
-          onPress={() => props.removeFavoriteSession('Remove Favorite')}>
+          style={[styles.actionButton, { backgroundColor: theme.colors.error }]}
+          onPress={() => props.removeFavoriteSession("Remove Favorite")}
+        >
           <ThemedText
             preset="sm"
             weight="medium"
-            style={{color: theme.colors.white}}>
+            style={{ color: theme.colors.white }}
+          >
             Remove
           </ThemedText>
         </TouchableOpacity>
@@ -43,13 +45,15 @@ const RightAction = (props: {
         <TouchableOpacity
           style={[
             styles.actionButton,
-            {backgroundColor: theme.colors.favorite},
+            { backgroundColor: theme.colors.favorite },
           ]}
-          onPress={props.addFavoriteSession}>
+          onPress={props.addFavoriteSession}
+        >
           <ThemedText
             preset="sm"
             weight="medium"
-            style={{color: theme.colors.white}}>
+            style={{ color: theme.colors.white }}
+          >
             Favorite
           </ThemedText>
         </TouchableOpacity>
@@ -60,13 +64,13 @@ const RightAction = (props: {
 
 interface SessionListItemProps {
   session: Session;
-  listType: 'all' | 'favorites';
+  listType: "all" | "favorites";
   onAddFavorite: (id: number) => void;
   onRemoveFavorite: (id: number) => void;
   onShowAlert: (
     header: string,
     message: string,
-    buttons: {text: string; onPress?: () => void}[],
+    buttons: { text: string; onPress?: () => void }[]
   ) => void;
   isFavorite: boolean;
   onPress: (session: Session) => void;
@@ -81,7 +85,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({
   session,
   listType,
 }) => {
-  const {colors} = useTheme() as CustomTheme;
+  const { colors } = useTheme() as CustomTheme;
   const track = session.tracks[0].toLowerCase() as Color;
   const swipeableRef = useRef<SwipeableMethods>(null);
 
@@ -93,31 +97,31 @@ const SessionListItem: React.FC<SessionListItemProps> = ({
     onAddFavorite(session.id);
     onShowAlert(
       title,
-      'Would you like to remove this session from your favorites?',
+      "Would you like to remove this session from your favorites?",
       [
         {
-          text: 'Cancel',
+          text: "Cancel",
           onPress: dismissAlert,
         },
         {
-          text: 'Remove',
+          text: "Remove",
           onPress: () => {
             onRemoveFavorite(session.id);
             dismissAlert();
           },
         },
-      ],
+      ]
     );
   };
 
   const addFavoriteSession = async () => {
     if (isFavorite) {
-      removeFavoriteSession('Favorite already added');
+      removeFavoriteSession("Favorite already added");
     } else {
       onAddFavorite(session.id);
       swipeableRef.current?.close();
       Toast.show({
-        type: 'success',
+        type: "success",
         text1: `${session.name} was successfully added as a favorite.`,
         autoHide: true,
         visibilityTime: 3000,
@@ -132,7 +136,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({
       rightThreshold={40}
       renderRightActions={(
         progressAnimatedValue: SharedValue<number>,
-        dragAnimatedValue: SharedValue<number>,
+        dragAnimatedValue: SharedValue<number>
       ) => (
         <RightAction
           prog={progressAnimatedValue}
@@ -145,20 +149,30 @@ const SessionListItem: React.FC<SessionListItemProps> = ({
       )}
       containerStyle={[
         styles.container,
-        {backgroundColor: colors.background, borderBottomColor: colors.border},
-      ]}>
+        {
+          backgroundColor: colors.background,
+          borderBottomColor: colors.border,
+        },
+      ]}
+    >
       <TouchableOpacity
         style={[
           styles.sessionButton,
-          track && colors[track] ? {backgroundColor: `${colors[track]}20`} : {},
+          track && colors[track]
+            ? { borderLeftWidth: 3, borderLeftColor: colors[track] }
+            : {},
         ]}
-        onPress={() => onPress(session)}>
-        <ThemedText preset="md" weight="semiBold">
-          {session.name}
-        </ThemedText>
-        <ThemedText preset="xs" style={styles.sessionTime}>
-          {session.timeStart} — {session.timeEnd}: {session.location}
-        </ThemedText>
+        onPress={() => onPress(session)}
+      >
+        <View style={styles.sessionInfo}>
+          <ThemedText preset="md" weight="medium">
+            {session.name}
+          </ThemedText>
+          <ThemedText preset="xs" style={styles.sessionTime}>
+            {session.timeStart} — {session.timeEnd} • {session.location}
+          </ThemedText>
+        </View>
+        <ThemedText style={styles.chevronIcon}>›</ThemedText>
       </TouchableOpacity>
     </ReanimatedSwipeable>
   );
@@ -169,21 +183,31 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   rightActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    height: '100%',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    height: "100%",
   },
   actionButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 100,
-    height: '100%',
+    height: "100%",
   },
   sessionButton: {
-    padding: 16,
+    padding: 12,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sessionInfo: {
+    flex: 1,
+    paddingRight: 16,
   },
   sessionTime: {
     marginTop: 4,
+    opacity: 0.6,
+  },
+  chevronIcon: {
+    opacity: 0.3,
   },
 });
 

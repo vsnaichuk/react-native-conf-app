@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import { TextInput, TouchableOpacity, Modal, StyleSheet } from "react-native";
+import { TextInput, TouchableOpacity, StyleSheet, View } from "react-native";
 import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "@expo/vector-icons/Ionicons";
@@ -44,9 +44,8 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   const navigation = useNavigation<NavScreenProp<"Schedule">>();
 
   const [segment, setSegment] = useState<"all" | "favorites">("all");
-  const [showSearchbar, setShowSearchbar] = useState(true);
-  const [showFilterModal, setShowFilterModal] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const favoritesSchedule = {
     ...mockSchedule,
@@ -83,6 +82,11 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     showRefreshSuccessToast();
   };
 
+  const handleSearchChange = (text: string) => {
+    setSearchQuery(text);
+    setSearchText(text);
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       // @TODO: Uncomment to use SegmentedControl
@@ -100,35 +104,40 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       // ),
       headerRight: ({ tintColor }) => (
         <TouchableOpacity
-          style={styles.button}
+          style={styles.headerButton}
           onPress={() => navigation.navigate("SessionsFilter")}
         >
           <Icon name="options" size={24} color={tintColor} />
         </TouchableOpacity>
       ),
     });
-  }, []);
+  }, [navigation]);
 
   return (
     <ThemedView style={styles.container}>
-      {showSearchbar && (
-        <ThemedView style={styles.searchContainer}>
+      <View style={styles.searchContainer}>
+        <View
+          style={[
+            styles.searchInputContainer,
+            { backgroundColor: colors.lightGray },
+          ]}
+        >
+          <Icon
+            name="search"
+            size={20}
+            color={colors.textSecondary}
+            style={styles.searchIcon}
+          />
           <TextInput
             style={[styles.searchInput, { color: colors.text }]}
-            placeholder={t("schedule.searchPlaceholder")}
+            placeholder="Search"
             placeholderTextColor={colors.textSecondary}
-            onChangeText={setSearchText}
+            value={searchQuery}
+            onChangeText={handleSearchChange}
           />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setShowSearchbar(false)}
-          >
-            <ThemedText preset="sm" color="textSecondary">
-              {t("common.cancel")}
-            </ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
-      )}
+        </View>
+      </View>
+
       <SessionList
         schedule={listType === "all" ? mockSchedule : favoritesSchedule}
         listType={listType as ListVariant}
@@ -144,25 +153,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  segmentControl: {
-    height: 40,
-    width: 200,
+  headerButton: {
+    padding: 8,
   },
   searchContainer: {
-    padding: 10,
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  searchInputContainer: {
     flexDirection: "row",
     alignItems: "center",
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    height: 44,
+  },
+  searchIcon: {
+    marginRight: 8,
   },
   searchInput: {
     flex: 1,
-    backgroundColor: "lightgray",
-    borderRadius: 8,
-    padding: 10,
     fontSize: 16,
-    marginRight: 10,
-  },
-  button: {
-    padding: 10,
+    height: 44,
   },
 });
 

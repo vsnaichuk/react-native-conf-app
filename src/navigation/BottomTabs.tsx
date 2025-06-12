@@ -15,7 +15,7 @@ import type { DrawerScreenProps } from "@react-navigation/drawer";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 // screens
 import ScheduleScreen from "../screens/ScheduleScreen";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 
 export type BottomTabParams = {
   Schedule: undefined;
@@ -56,8 +56,33 @@ export function BottomTabs() {
           animation: "shift",
         })}
       >
-        <Tab.Screen name="Schedule" component={ScheduleScreen} />
+        <Tab.Screen
+          name="Schedule"
+          component={ScheduleScreen}
+          options={{ tabBarIcon: getTabBarIcon("calendar-outline") }}
+        />
+        <Tab.Screen
+          name="Speakers"
+          component={View} // TODO: SpeakersScreen
+          options={{ tabBarIcon: getTabBarIcon("people-outline") }}
+        />
+        <Tab.Screen
+          name="Map"
+          component={View} // TODO: MapScreen
+          options={{ tabBarIcon: getTabBarIcon("map-outline") }}
+        />
+        <Tab.Screen
+          name="About"
+          component={View} // TODO: AboutScreen
+          options={{ tabBarIcon: getTabBarIcon("information-circle-outline") }}
+        />
       </Tab.Navigator>
     </>
   );
 }
+
+const getTabBarIcon =
+  (name: React.ComponentProps<typeof Ionicons>["name"]) =>
+  ({ color, size }: { color: string; size: number }) => {
+    return <Ionicons name={name} color={color} size={size} />;
+  };
