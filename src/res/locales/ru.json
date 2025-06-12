@@ -1,0 +1,11 @@
+{
+  "common": {
+    "home": "home_ru",
+    "profile": "profile_ru",
+    "language": "language_ru"
+  },
+  "home": {
+    "searchPlaceholder": "search_ru",
+    "noResults": "no_results_ru"
+  }
+}

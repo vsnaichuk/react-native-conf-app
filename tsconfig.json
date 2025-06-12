@@ -6,10 +6,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "module": "preserve",
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
@@ -23,7 +20,7 @@
     "skipLibCheck": true,
     "strict": false,
     "target": "esnext",
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": false
   },
   "extends": "expo/tsconfig.base"
 }

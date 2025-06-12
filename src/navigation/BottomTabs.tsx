@@ -4,7 +4,6 @@ import {
 } from "@react-navigation/bottom-tabs";
 
 import { IS_LARGE_SCREEN } from "../constants";
-import { ScheduleScreen } from "../screens/ScheduleScreen";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -14,6 +13,8 @@ import {
 import type { RootDrawerParamList, RootStackParamList } from "./types";
 import type { DrawerScreenProps } from "@react-navigation/drawer";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+// screens
+import ScheduleScreen from "../screens/ScheduleScreen";
 
 export type BottomTabParams = {
   Schedule: undefined;

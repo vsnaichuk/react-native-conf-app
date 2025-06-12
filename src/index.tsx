@@ -15,7 +15,7 @@ import {
 } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
-import { useWindowDimensions, View } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
 
 import {
@@ -25,7 +25,18 @@ import {
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { linking } from "./navigation/linking";
 import { BottomTabs } from "./navigation/BottomTabs";
+// screens
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// import TutorialScreen from "./screens/TutorialScreen";
+// import AboutScreen from "./screens/AboutScreen";
+// import AccountScreen from "./screens/AccountScreen";
+// import LoginScreen from "./screens/LoginScreen";
+// import MapScreen from "./screens/MapScreen";
+// import SessionDetailScreen from "./screens/SessionDetailScreen";
+// import SpeakerDetailScreen from "./screens/SpeakerDetailScreen";
+// import SpeakerListScreen from "./screens/SpeakerListScreen";
+import SessionsFilterScreen from "./screens/SessionsFilterScreen";
+import SessionDetailScreen from "./screens/SessionDetailScreen";
 
 // drawer
 
@@ -110,6 +121,24 @@ export function App() {
       >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Drawer" component={DrawerNavigator} />
+          {/* <Stack.Screen name="Tutorial" component={TutorialScreen} /> */}
+          {/* <Stack.Screen name="SpeakerList" component={SpeakerListScreen} /> */}
+          {/* <Stack.Screen name="SpeakerDetail" component={SpeakerDetailScreen} /> */}
+          {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
+          {/* <Stack.Screen name="About" component={AboutScreen} /> */}
+          <Stack.Screen name="SessionDetail" component={SessionDetailScreen} />
+          {/* <Stack.Screen name="Account" component={AccountScreen} /> */}
+          {/* <Stack.Screen name="Map" component={MapScreen} /> */}
+          <Stack.Group
+            screenOptions={{
+              presentation: "formSheet",
+            }}
+          >
+            <Stack.Screen
+              name="SessionsFilter"
+              component={SessionsFilterScreen}
+            />
+          </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
     </Providers>

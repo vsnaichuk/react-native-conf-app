@@ -1,0 +1,11 @@
+{
+  "common": {
+    "home": "Home",
+    "profile": "Profile",
+    "language": "Language"
+  },
+  "home": {
+    "searchPlaceholder": "Search Pokémon",
+    "noResults": "No results found"
+  }
+}
