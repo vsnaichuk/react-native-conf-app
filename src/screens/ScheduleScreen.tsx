@@ -3,7 +3,7 @@ import { TextInput, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "@expo/vector-icons/Ionicons";
-import SegmentedControl from "@react-native-segmented-control/segmented-control";
+// import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import SessionList from "../components/SessionList";
 import ShareSocialFab from "../components/ShareSocialFab";
 import { connect } from "../data/connect";
@@ -85,18 +85,19 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: () => (
-        <SegmentedControl
-          values={[t("schedule.all"), t("schedule.favorites")]}
-          selectedIndex={segment === "all" ? 0 : 1}
-          onChange={(event) => {
-            setSegment(
-              event.nativeEvent.selectedSegmentIndex === 0 ? "all" : "favorites"
-            );
-          }}
-          style={styles.segmentControl}
-        />
-      ),
+      // @TODO: Uncomment to use SegmentedControl
+      // headerTitle: () => (
+      //   <SegmentedControl
+      //     values={[t("schedule.all"), t("schedule.favorites")]}
+      //     selectedIndex={segment === "all" ? 0 : 1}
+      //     onChange={(event) => {
+      //       setSegment(
+      //         event.nativeEvent.selectedSegmentIndex === 0 ? "all" : "favorites"
+      //       );
+      //     }}
+      //     style={styles.segmentControl}
+      //   />
+      // ),
       headerRight: ({ tintColor }) => (
         <TouchableOpacity
           style={styles.button}

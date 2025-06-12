@@ -12,10 +12,17 @@ import {
   DefaultTheme,
   NavigationContainer,
   useNavigationContainerRef,
+  useTheme,
 } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
-import { useWindowDimensions } from "react-native";
+import {
+  useWindowDimensions,
+  View,
+  StyleSheet,
+  Switch,
+  TouchableOpacity,
+} from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
 
 import {
@@ -25,55 +32,223 @@ import {
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { linking } from "./navigation/linking";
 import { BottomTabs } from "./navigation/BottomTabs";
-// screens
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import TutorialScreen from "./screens/TutorialScreen";
-// import AboutScreen from "./screens/AboutScreen";
-// import AccountScreen from "./screens/AccountScreen";
-// import LoginScreen from "./screens/LoginScreen";
-// import MapScreen from "./screens/MapScreen";
-// import SessionDetailScreen from "./screens/SessionDetailScreen";
-// import SpeakerDetailScreen from "./screens/SpeakerDetailScreen";
-// import SpeakerListScreen from "./screens/SpeakerListScreen";
 import SessionsFilterScreen from "./screens/SessionsFilterScreen";
 import SessionDetailScreen from "./screens/SessionDetailScreen";
-
-// drawer
+import { lightTheme, CustomTheme } from "./res/colors";
+import { ThemedView } from "./components/themed/ThemedView";
+import { ThemedText } from "./components/themed/ThemedText";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
-const CustomDrawerContent = (props: DrawerContentComponentProps) => {
-  const { navigation } = props;
+
+const DrawerSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => {
+  const { colors } = useTheme() as CustomTheme;
+
   return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItem
-        label="Schedule"
-        icon={({ color, size }) => (
-          <Ionicons name="calendar" color={color} size={size} />
-        )}
-        onPress={() => {
-          navigation.navigate("BottomTabs", {
-            screen: "Schedule",
-          });
-        }}
-      />
-      <DrawerItem
-        label="Chat"
-        icon={({ color, size }) => (
-          <Ionicons name="person" color={color} size={size} />
-        )}
-        onPress={() => {
-          // Do nothing for now
-        }}
-      />
-    </DrawerContentScrollView>
+    <View style={styles.section}>
+      <ThemedText
+        preset="xl"
+        weight="semiBold"
+        style={[styles.sectionTitle, { color: colors.text }]}
+      >
+        {title}
+      </ThemedText>
+      {children}
+    </View>
   );
 };
+
+const DrawerMenuItem = ({
+  icon,
+  label,
+  onPress,
+  showChevron = true,
+}: {
+  icon: string;
+  label: string;
+  onPress: () => void;
+  showChevron?: boolean;
+}) => {
+  const { colors } = useTheme() as CustomTheme;
+
+  return (
+    <TouchableOpacity style={styles.menuItem} onPress={onPress}>
+      <View style={styles.menuItemLeft}>
+        <Ionicons
+          name={icon as any}
+          size={24}
+          color={colors.primary}
+          style={styles.menuIcon}
+        />
+        <ThemedText style={[styles.menuLabel, { color: colors.text }]}>
+          {label}
+        </ThemedText>
+      </View>
+      {showChevron && (
+        <Ionicons
+          name="chevron-forward"
+          size={16}
+          color={colors.textSecondary}
+        />
+      )}
+    </TouchableOpacity>
+  );
+};
+
+const DrawerSwitchItem = ({
+  icon,
+  label,
+  value,
+  onValueChange,
+}: {
+  icon: string;
+  label: string;
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+}) => {
+  const { colors } = useTheme() as CustomTheme;
+
+  return (
+    <View style={styles.menuItem}>
+      <View style={styles.menuItemLeft}>
+        <Ionicons
+          name={icon as any}
+          size={24}
+          color={colors.primary}
+          style={styles.menuIcon}
+        />
+        <ThemedText style={[styles.menuLabel, { color: colors.text }]}>
+          {label}
+        </ThemedText>
+      </View>
+      <Switch
+        value={value}
+        onValueChange={onValueChange}
+        trackColor={{ false: colors.lightGray, true: colors.primary }}
+        thumbColor={value ? colors.white : colors.textSecondary}
+      />
+    </View>
+  );
+};
+
+const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+  const { navigation } = props;
+  const insets = useSafeAreaInsets();
+  const [isDarkMode, setIsDarkMode] = React.useState(false); // TODO: use global state here
+
+  return (
+    <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={styles.scrollContainer}
+      >
+        <DrawerSection title="Conference">
+          <DrawerMenuItem
+            icon="calendar-outline"
+            label="Schedule"
+            onPress={() =>
+              navigation.navigate("BottomTabs", { screen: "Schedule" })
+            }
+          />
+          <DrawerMenuItem
+            icon="people-outline"
+            label="Speakers"
+            onPress={() => {}}
+          />
+          <DrawerMenuItem icon="map-outline" label="Map" onPress={() => {}} />
+          <DrawerMenuItem
+            icon="information-circle-outline"
+            label="About"
+            onPress={() => {}}
+          />
+        </DrawerSection>
+
+        <DrawerSection title="Account">
+          <DrawerMenuItem
+            icon="person-outline"
+            label="Account"
+            onPress={() => {}}
+          />
+          <DrawerMenuItem
+            icon="help-circle-outline"
+            label="Support"
+            onPress={() => {}}
+          />
+          <DrawerMenuItem
+            icon="log-out-outline"
+            label="Logout"
+            onPress={() => {}}
+          />
+          <DrawerSwitchItem
+            icon="moon-outline"
+            label="Dark Mode"
+            value={isDarkMode}
+            onValueChange={setIsDarkMode}
+          />
+        </DrawerSection>
+
+        <DrawerSection title="Tutorial">
+          <DrawerMenuItem
+            icon="school-outline"
+            label="Show Tutorial"
+            onPress={() => {}}
+          />
+        </DrawerSection>
+      </DrawerContentScrollView>
+    </ThemedView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollContainer: {
+    paddingTop: 0,
+  },
+  section: {
+    marginBottom: 40,
+  },
+  sectionTitle: {
+    marginBottom: 16,
+    paddingHorizontal: 20,
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    minHeight: 56,
+  },
+  menuItemLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  menuIcon: {
+    marginRight: 16,
+    width: 24,
+  },
+  menuLabel: {},
+});
+
 export const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
+        drawerStyle: {
+          width: 300,
+        },
       }}
     >
       <Drawer.Screen name="BottomTabs" component={BottomTabs} />
@@ -98,7 +273,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export function App() {
-  const [theme, setTheme] = React.useState(DefaultTheme);
+  const [theme, setTheme] = React.useState(lightTheme);
 
   const dimensions = useWindowDimensions();
 
@@ -115,7 +290,7 @@ export function App() {
         onReady={() => {
           SplashScreen.hideAsync();
         }}
-        theme={theme}
+        theme={lightTheme}
         linking={linking}
         fallback={<Text>Loading…</Text>}
       >

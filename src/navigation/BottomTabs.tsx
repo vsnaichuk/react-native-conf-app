@@ -15,6 +15,7 @@ import type { DrawerScreenProps } from "@react-navigation/drawer";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 // screens
 import ScheduleScreen from "../screens/ScheduleScreen";
+import { Platform } from "react-native";
 
 export type BottomTabParams = {
   Schedule: undefined;
@@ -39,11 +40,18 @@ export function BottomTabs() {
             <HeaderBackButton
               {...props}
               backImage={() => (
-                <Ionicons name="menu" size={23} color={props.tintColor} />
+                <Ionicons
+                  name="menu"
+                  size={24}
+                  color={props.tintColor}
+                  style={{ padding: Platform.OS === "ios" ? 8 : 0 }}
+                />
               )}
               onPress={navigation.openDrawer}
             />
           ),
+          headerRightContainerStyle: { height: 40 },
+          headerLeftContainerStyle: { height: 40 },
           tabBarPosition: IS_LARGE_SCREEN ? "left" : "bottom",
           animation: "shift",
         })}

@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 40,
     paddingBottom: 30,
-    // @FIXME: Fix this AI generated style
+    // @TODO: Fix this AI generated style
     // background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   },
   profileContainer: {
