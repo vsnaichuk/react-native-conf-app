@@ -16,9 +16,15 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 // screens
 import ScheduleScreen from "../screens/ScheduleScreen";
 import { Platform, View } from "react-native";
+import MapScreen from "../screens/MapScreen";
+import SpeakerListScreen from "../screens/SpeakerListScreen";
+import AboutScreen from "../screens/AboutScreen";
 
 export type BottomTabParams = {
   Schedule: undefined;
+  Speakers: undefined;
+  Map: undefined;
+  About: undefined;
 };
 
 const Tab = createBottomTabNavigator<BottomTabParams>();
@@ -63,18 +69,23 @@ export function BottomTabs() {
         />
         <Tab.Screen
           name="Speakers"
-          component={View} // TODO: SpeakersScreen
+          component={SpeakerListScreen}
           options={{ tabBarIcon: getTabBarIcon("people-outline") }}
         />
         <Tab.Screen
           name="Map"
-          component={View} // TODO: MapScreen
+          component={MapScreen}
           options={{ tabBarIcon: getTabBarIcon("map-outline") }}
         />
         <Tab.Screen
           name="About"
-          component={View} // TODO: AboutScreen
-          options={{ tabBarIcon: getTabBarIcon("information-circle-outline") }}
+          component={AboutScreen}
+          options={{
+            tabBarIcon: getTabBarIcon("information-circle-outline"),
+            headerBackgroundContainerStyle: { backgroundColor: "transparent" },
+            headerTransparent: true,
+            headerTitle: "",
+          }}
         />
       </Tab.Navigator>
     </>

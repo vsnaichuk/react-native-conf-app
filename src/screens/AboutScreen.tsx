@@ -1,13 +1,12 @@
 import React, { useLayoutEffect, useState } from "react";
 import {
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   Platform,
   StyleSheet,
+  Image,
 } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
-import Icon from "@expo/vector-icons/Ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format, parseISO } from "date-fns";
 import { CustomTheme } from "../res/colors";
@@ -16,6 +15,8 @@ import AboutLocationsMenu from "../components/AboutLocationsMenu";
 import { NavScreenProp } from "../navigation/types";
 import { ThemedText } from "../components/themed/ThemedText";
 import { ThemedView } from "../components/themed/ThemedView";
+import { HeaderButton } from "@react-navigation/elements";
+import { images } from "../res/constants";
 
 interface AboutProps {}
 
@@ -36,86 +37,84 @@ const AboutScreen: React.FC<AboutProps> = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <AboutHeaderMenu />,
+      headerTintColor: colors.white,
+      headerRight: (props) => (
+        <HeaderButton {...props}>
+          <AboutHeaderMenu tintColor={colors.white} />
+        </HeaderButton>
+      ),
     });
   });
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.background }]}
-    >
-      <ScrollView>
-        <ThemedView
-          style={[
-            styles.aboutHeader,
-            {
-              backgroundColor: colors[location] || colors.primary,
-            },
-          ]}
-        />
-        <ThemedView style={styles.aboutInfo}>
-          <ThemedText preset="lg" weight="bold" style={styles.sectionTitle}>
-            About
-          </ThemedText>
-          <ThemedText preset="sm" style={styles.paragraph}>
-            The Ionic Conference is a one-day event happening on{" "}
-            {displayDate(conferenceDate, "MMM dd, yyyy")}, featuring talks from
-            the Ionic team. The conference focuses on building applications with
-            Ionic Framework, including topics such as app migration to the
-            latest version, React best practices, Webpack, Sass, and other
-            technologies commonly used in the Ionic ecosystem. Tickets are
-            completely sold out, and we're expecting over 1,000 developers —
-            making this the largest Ionic conference to date!
-          </ThemedText>
+    <ScrollView contentContainerStyle={{ backgroundColor: colors.background }}>
+      <Image
+        style={styles.aboutHeader}
+        source={images.about_bg}
+        resizeMode="cover"
+      />
+      <ThemedView style={styles.aboutInfo}>
+        <ThemedText preset="lg" weight="bold" style={styles.sectionTitle}>
+          About
+        </ThemedText>
+        <ThemedText preset="sm" style={styles.paragraph}>
+          The Ionic Conference is a one-day event happening on{" "}
+          {displayDate(conferenceDate, "MMM dd, yyyy")}, featuring talks from
+          the Ionic team. The conference focuses on building applications with
+          Ionic Framework, including topics such as app migration to the latest
+          version, React best practices, Webpack, Sass, and other technologies
+          commonly used in the Ionic ecosystem. Tickets are completely sold out,
+          and we're expecting over 1,000 developers — making this the largest
+          Ionic conference to date!
+        </ThemedText>
 
-          <ThemedText preset="lg" weight="bold" style={styles.sectionTitle}>
-            Details
-          </ThemedText>
-          <ThemedView style={styles.list}>
-            <ThemedView style={styles.listItem}>
-              <ThemedText preset="sm">Location</ThemedText>
-              <AboutLocationsMenu value={location} onSelect={setLocation} />
-            </ThemedView>
-            <TouchableOpacity
-              style={styles.listItem}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <ThemedText preset="sm">Date</ThemedText>
-              <DateTimePicker
-                value={parseISO(conferenceDate)}
-                mode="date"
-                maximumDate={new Date("2056-12-31")}
-                onChange={(event, date) => {
-                  if (date) {
-                    setConferenceDate(date.toISOString());
-                    setShowDatePicker(false);
-                  }
-                }}
-                style={styles.datePicker}
-              />
-            </TouchableOpacity>
+        <ThemedText preset="lg" weight="bold" style={styles.sectionTitle}>
+          Details
+        </ThemedText>
+        <ThemedView style={styles.list}>
+          <ThemedView style={styles.listItem}>
+            <ThemedText preset="sm">Location</ThemedText>
+            <AboutLocationsMenu value={location} onSelect={setLocation} />
           </ThemedView>
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <ThemedText preset="sm">Date</ThemedText>
+            <DateTimePicker
+              value={parseISO(conferenceDate)}
+              mode="date"
+              maximumDate={new Date("2056-12-31")}
+              onChange={(event, date) => {
+                if (date) {
+                  setConferenceDate(date.toISOString());
+                  setShowDatePicker(false);
+                }
+              }}
+              style={styles.datePicker}
+            />
+          </TouchableOpacity>
+        </ThemedView>
 
-          <ThemedText preset="lg" weight="bold" style={styles.sectionTitle}>
-            Internet
-          </ThemedText>
-          <ThemedView style={styles.list}>
-            <ThemedView style={styles.listItem}>
-              <ThemedText preset="sm">Wifi network</ThemedText>
-              <ThemedText preset="sm" style={styles.textEnd}>
-                ica{displayDate(conferenceDate, "y")}
-              </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.listItem}>
-              <ThemedText preset="sm">Password</ThemedText>
-              <ThemedText preset="sm" style={styles.textEnd}>
-                makegoodthings
-              </ThemedText>
-            </ThemedView>
+        <ThemedText preset="lg" weight="bold" style={styles.sectionTitle}>
+          Internet
+        </ThemedText>
+        <ThemedView style={styles.list}>
+          <ThemedView style={styles.listItem}>
+            <ThemedText preset="sm">Wifi network</ThemedText>
+            <ThemedText preset="sm" style={styles.textEnd}>
+              ica{displayDate(conferenceDate, "y")}
+            </ThemedText>
+          </ThemedView>
+          <ThemedView style={styles.listItem}>
+            <ThemedText preset="sm">Password</ThemedText>
+            <ThemedText preset="sm" style={styles.textEnd}>
+              makegoodthings
+            </ThemedText>
           </ThemedView>
         </ThemedView>
-      </ScrollView>
-    </SafeAreaView>
+      </ThemedView>
+    </ScrollView>
   );
 };
 
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
   },
   aboutHeader: {
     width: "100%",
-    height: 200,
+    height: 300,
   },
   aboutInfo: {
     marginTop: -10,

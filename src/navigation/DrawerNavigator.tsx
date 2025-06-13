@@ -57,7 +57,13 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
             label="Speakers"
             onPress={() => {}}
           />
-          <DrawerMenuItem icon="map-outline" label="Map" onPress={() => {}} />
+          <DrawerMenuItem
+            icon="map-outline"
+            label="Map"
+            onPress={() => {
+              navigation.navigate("BottomTabs", { screen: "Map" });
+            }}
+          />
           <DrawerMenuItem
             icon="information-circle-outline"
             label="About"

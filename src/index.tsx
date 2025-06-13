@@ -15,11 +15,17 @@ import { type RootStackParamList } from "./navigation/types";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { linking } from "./navigation/linking";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SessionsFilterScreen from "./screens/SessionsFilterScreen";
-import SessionDetailScreen from "./screens/SessionDetailScreen";
 import { lightTheme } from "./res/colors";
 import { DrawerNavigator } from "./navigation/DrawerNavigator";
+// screens
+import SessionsFilterScreen from "./screens/SessionsFilterScreen";
+import SessionDetailScreen from "./screens/SessionDetailScreen";
 import SpeakerDetailScreen from "./screens/SpeakerDetailScreen";
+import TutorialScreen from "./screens/TutorialScreen";
+import LoginScreen from "./screens/LoginScreen";
+import AboutScreen from "./screens/AboutScreen";
+import AccountScreen from "./screens/AccountScreen";
+import MapScreen from "./screens/MapScreen";
 
 // root stack
 
@@ -65,14 +71,13 @@ export function App() {
             component={DrawerNavigator}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen name="Tutorial" component={TutorialScreen} /> */}
-          {/* <Stack.Screen name="SpeakerList" component={SpeakerListScreen} /> */}
+          <Stack.Screen name="Tutorial" component={TutorialScreen} />
           <Stack.Screen name="SpeakerDetail" component={SpeakerDetailScreen} />
-          {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
-          {/* <Stack.Screen name="About" component={AboutScreen} /> */}
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="About" component={AboutScreen} />
           <Stack.Screen name="SessionDetail" component={SessionDetailScreen} />
-          {/* <Stack.Screen name="Account" component={AccountScreen} /> */}
-          {/* <Stack.Screen name="Map" component={MapScreen} /> */}
+          <Stack.Screen name="Account" component={AccountScreen} />
+          <Stack.Screen name="Map" component={MapScreen} />
           <Stack.Group
             screenOptions={{
               presentation: "formSheet",

@@ -3,7 +3,7 @@ import { TextInput, TouchableOpacity, StyleSheet, View } from "react-native";
 import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "@expo/vector-icons/Ionicons";
-// import SegmentedControl from "@react-native-segmented-control/segmented-control";
+import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import SessionList from "../components/SessionList";
 import ShareSocialFab from "../components/ShareSocialFab";
 import { connect } from "../data/connect";
@@ -89,19 +89,18 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      // @TODO: Uncomment to use SegmentedControl
-      // headerTitle: () => (
-      //   <SegmentedControl
-      //     values={[t("schedule.all"), t("schedule.favorites")]}
-      //     selectedIndex={segment === "all" ? 0 : 1}
-      //     onChange={(event) => {
-      //       setSegment(
-      //         event.nativeEvent.selectedSegmentIndex === 0 ? "all" : "favorites"
-      //       );
-      //     }}
-      //     style={styles.segmentControl}
-      //   />
-      // ),
+      headerTitle: () => (
+        <SegmentedControl
+          values={["All", "Favorites"]}
+          selectedIndex={segment === "all" ? 0 : 1}
+          onChange={(event) => {
+            setSegment(
+              event.nativeEvent.selectedSegmentIndex === 0 ? "all" : "favorites"
+            );
+          }}
+          style={styles.segmentControl}
+        />
+      ),
       headerRight: ({ tintColor }) => (
         <TouchableOpacity
           style={styles.headerButton}
@@ -115,7 +114,11 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
 
   return (
     <ThemedView style={styles.container}>
-      <View style={styles.searchContainer}>
+      <View style={styles.topContainer}>
+        <ThemedText preset="xxl" weight="bold">
+          Schedule
+        </ThemedText>
+
         <View
           style={[
             styles.searchInputContainer,
@@ -156,10 +159,13 @@ const styles = StyleSheet.create({
   headerButton: {
     padding: 8,
   },
-  searchContainer: {
+  topContainer: {
     paddingHorizontal: 16,
-    paddingTop: 8,
+    paddingTop: 16,
     paddingBottom: 16,
+  },
+  segmentControl: {
+    width: 200,
   },
   searchInputContainer: {
     flexDirection: "row",
@@ -167,6 +173,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 44,
+    marginTop: 8,
   },
   searchIcon: {
     marginRight: 8,

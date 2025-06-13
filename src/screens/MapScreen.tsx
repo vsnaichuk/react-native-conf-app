@@ -42,9 +42,10 @@ const MapScreen: React.FC<MapScreenProps> = ({ locations, loadLocations }) => {
   // Use mock data if no real data is available
   const displayLocations = locations?.length > 0 ? locations : mockLocations;
 
-  useEffect(() => {
-    loadLocations();
-  }, [loadLocations]);
+  // @TODO: Uncomment to use real data
+  // useEffect(() => {
+  //   loadLocations();
+  // }, [loadLocations]);
 
   useEffect(() => {
     if (displayLocations.length && mapRef.current) {
@@ -65,24 +66,6 @@ const MapScreen: React.FC<MapScreenProps> = ({ locations, loadLocations }) => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: colors.background }]}
     >
-      <ThemedView
-        style={[
-          styles.header,
-          {
-            borderBottomColor: colors.border,
-            backgroundColor: colors.card,
-          },
-        ]}
-      >
-        <TouchableOpacity style={styles.button} onPress={navigation.openDrawer}>
-          <Icon name="menu" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <ThemedText preset="lg" weight="semiBold" style={styles.headerTitle}>
-          Map
-        </ThemedText>
-        <ThemedView style={styles.headerSpacer} />
-      </ThemedView>
-
       <Animated.View style={[styles.mapContainer, { opacity }]}>
         <MapView
           ref={mapRef}

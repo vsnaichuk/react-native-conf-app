@@ -4,7 +4,7 @@ import * as DropdownMenu from "zeego/dropdown-menu";
 import { useTheme } from "@react-navigation/native";
 import { CustomTheme } from "../res/colors";
 
-const AboutHeaderMenu = () => {
+const AboutHeaderMenu = ({ tintColor }: { tintColor?: string }) => {
   const theme = useTheme() as CustomTheme;
 
   const openUrl = async (url: string) => {
@@ -23,7 +23,7 @@ const AboutHeaderMenu = () => {
             Platform.OS === "ios" ? "ellipsis-horizontal" : "ellipsis-vertical"
           }
           size={24}
-          color={theme.colors.text}
+          color={tintColor || theme.colors.text}
         />
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
