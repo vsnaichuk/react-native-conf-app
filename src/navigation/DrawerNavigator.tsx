@@ -55,7 +55,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           <DrawerMenuItem
             icon="people-outline"
             label="Speakers"
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate("BottomTabs", { screen: "Speakers" });
+            }}
           />
           <DrawerMenuItem
             icon="map-outline"
@@ -67,7 +69,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           <DrawerMenuItem
             icon="information-circle-outline"
             label="About"
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate("BottomTabs", { screen: "About" });
+            }}
           />
         </DrawerSection>
 

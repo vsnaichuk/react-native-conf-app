@@ -1,5 +1,11 @@
 import React, { useLayoutEffect, useState } from "react";
-import { TextInput, TouchableOpacity, StyleSheet, View } from "react-native";
+import {
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Platform,
+} from "react-native";
 import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "@expo/vector-icons/Ionicons";
@@ -165,7 +171,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   segmentControl: {
-    width: 200,
+    minWidth: "100%",
   },
   searchInputContainer: {
     flexDirection: "row",

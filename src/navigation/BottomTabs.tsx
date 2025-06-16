@@ -56,8 +56,6 @@ export function BottomTabs() {
               onPress={navigation.openDrawer}
             />
           ),
-          headerRightContainerStyle: { height: 40 },
-          headerLeftContainerStyle: { height: 40 },
           tabBarPosition: IS_LARGE_SCREEN ? "left" : "bottom",
           animation: "shift",
         })}
