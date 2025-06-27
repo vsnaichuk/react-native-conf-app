@@ -14,13 +14,15 @@ import { CustomTheme } from "../res/colors";
 import { ThemedView } from "../components/themed/ThemedView";
 import { ThemedText } from "../components/themed/ThemedText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { setDarkMode } from "../data/user/user.actions";
+import { connect } from "../data/connect";
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
 export const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => <DrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerStyle: {
@@ -33,10 +35,14 @@ export const DrawerNavigator = () => {
   );
 };
 
-const CustomDrawerContent = (props: DrawerContentComponentProps) => {
-  const { navigation } = props;
+const CustomDrawerContent = (
+  props: DrawerContentComponentProps & {
+    darkMode: boolean;
+    setDarkMode: typeof setDarkMode;
+  }
+) => {
+  const { navigation, darkMode, setDarkMode } = props;
   const insets = useSafeAreaInsets();
-  const [isDarkMode, setIsDarkMode] = React.useState(false); // TODO: use global state here
 
   return (
     <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
@@ -94,8 +100,8 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           <DrawerSwitchItem
             icon="moon-outline"
             label="Dark Mode"
-            value={isDarkMode}
-            onValueChange={setIsDarkMode}
+            value={darkMode}
+            onValueChange={setDarkMode}
           />
         </DrawerSection>
 
@@ -103,13 +109,25 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           <DrawerMenuItem
             icon="school-outline"
             label="Show Tutorial"
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate("Tutorial");
+            }}
           />
         </DrawerSection>
       </DrawerContentScrollView>
     </ThemedView>
   );
 };
+
+const DrawerContent = connect({
+  mapStateToProps: (state) => ({
+    darkMode: state.user.darkMode,
+  }),
+  mapDispatchToProps: {
+    setDarkMode,
+  },
+  component: CustomDrawerContent,
+});
 
 const DrawerSection = ({
   title,

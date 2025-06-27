@@ -9,7 +9,7 @@ import { NavScreenProp } from "../navigation/types";
 import { ThemedText } from "../components/themed/ThemedText";
 import { ThemedView } from "../components/themed/ThemedView";
 import { HeaderButton } from "@react-navigation/elements";
-import { images } from "../res/constants";
+import { images } from "../res/images";
 import { DatePickerField } from "../components/DatePickerField";
 
 interface AboutProps {}

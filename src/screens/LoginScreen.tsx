@@ -15,7 +15,7 @@ import { CustomTheme } from "../res/colors";
 import { setIsLoggedIn, setUsername } from "../data/user/user.actions";
 import { connect } from "../data/connect";
 import { NavScreenProp } from "../navigation/types";
-import { images } from "../res/constants";
+import { images } from "../res/images";
 
 interface LoginProps {
   setIsLoggedIn: typeof setIsLoggedIn;

@@ -23,8 +23,7 @@ interface DispatchProps {
 }
 type TutorialScreenProps = OwnProps & DispatchProps;
 
-// Derive slides from mockSpeakers and mockSpeakerSessions
-const mockTutorialSlides = [
+const tutorialSlides = [
   {
     id: 1,
     image: "https://reactjs.org/logo-og.png",
@@ -81,7 +80,7 @@ const TutorialScreen: React.FC<TutorialScreenProps> = ({
   const startApp = async () => {
     await setHasSeenTutorial(true);
     await setMenuEnabled(true);
-    navigation.navigate("BottomTabs", { screen: "Schedule" });
+    navigation.navigate("Home");
   };
 
   const renderTextWithBold = (text: string, boldText: string) => {
@@ -124,7 +123,7 @@ const TutorialScreen: React.FC<TutorialScreenProps> = ({
         decelerationRate="fast"
         style={styles.slider}
       >
-        {mockTutorialSlides.map((slide) => (
+        {tutorialSlides.map((slide) => (
           <View key={slide.id} style={[styles.slide, { width }]}>
             <Image
               source={{ uri: slide.image }}

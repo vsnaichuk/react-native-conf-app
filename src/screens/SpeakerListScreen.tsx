@@ -7,7 +7,6 @@ import { Session } from "../models/Schedule";
 import { connect } from "../data/connect";
 import * as selectors from "../data/selectors";
 import { CustomTheme } from "../res/colors";
-import { mockSpeakers, mockSpeakerSessions } from "../data/mocks";
 import { ThemedView } from "../components/themed/ThemedView";
 
 interface OwnProps {}
@@ -28,15 +27,11 @@ const SpeakerListScreen: React.FC<SpeakerListProps> = ({
   const { colors } = useTheme() as CustomTheme;
   const screenWidth = Dimensions.get("window").width;
 
-  // Determine number of columns based on screen width (similar to Ionic's responsive behavior)
   const numColumns = screenWidth > 768 ? 2 : 1;
 
-  // Use mock data if no real data is available (for testing)
-  const displaySpeakers = speakers?.length > 0 ? speakers : mockSpeakers;
+  const displaySpeakers = speakers?.length > 0 ? speakers : [];
   const displaySessions =
-    Object.keys(speakerSessions).length > 0
-      ? speakerSessions
-      : mockSpeakerSessions;
+    Object.keys(speakerSessions).length > 0 ? speakerSessions : {};
 
   const renderSpeaker = ({ item: speaker }: { item: Speaker }) => (
     <ThemedView

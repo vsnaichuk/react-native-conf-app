@@ -19,6 +19,7 @@ import { addFavorite, removeFavorite } from "../data/sessions/sessions.actions";
 import { Session } from "../models/Schedule";
 import { mockSessions } from "../data/mocks";
 import { NavScreenProp } from "../navigation/types";
+import { connect } from "../data/connect";
 
 interface OwnProps {}
 
@@ -34,14 +35,16 @@ interface DispatchProps {
 
 type SessionDetailScreenProps = OwnProps & StateProps & DispatchProps;
 
-const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
+const SessionDetailScreen: React.FC<SessionDetailScreenProps> = ({
+  sessions,
+}) => {
   const { colors } = useTheme() as CustomTheme;
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NavScreenProp<"SessionDetail">>();
   const route = useRoute<RouteProp<{ params: { id: number } }>>();
   const { id } = route?.params ?? {};
 
-  const session = mockSessions.find((session) => session.id === id);
+  const session = sessions.find((s) => String(s.id) === String(id));
 
   if (!session) {
     return (
@@ -105,7 +108,7 @@ const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
                 <ThemedText
                   preset="xs"
                   weight="medium"
-                  style={{ color: trackColor }}
+                  style={{ color: colors.white }}
                 >
                   {track}
                 </ThemedText>
@@ -144,13 +147,13 @@ const SessionDetailScreen: React.FC<SessionDetailScreenProps> = () => {
             {action === "Download Video" ? (
               <ThemedView style={styles.downloadButton}>
                 <ThemedText preset="sm" color="primary">
-                  " {action}
+                  {action}
                 </ThemedText>
                 <Icon name="cloud-download" size={18} color={colors.primary} />
               </ThemedView>
             ) : (
               <ThemedText preset="sm" color="primary">
-                " {action}
+                {action}
               </ThemedText>
             )}
           </TouchableOpacity>
@@ -226,4 +229,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SessionDetailScreen;
+export default connect<OwnProps, StateProps, DispatchProps>({
+  mapStateToProps: (state) => ({
+    sessions: state.data.sessions,
+    favoriteSessions: state.data.favorites,
+  }),
+  mapDispatchToProps: {
+    addFavorite,
+    removeFavorite,
+  },
+  component: SessionDetailScreen,
+});

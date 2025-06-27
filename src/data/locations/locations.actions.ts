@@ -11,7 +11,7 @@ export const setLocations = (locations: Location[]): DispatchObject => ({
 export const loadLocations =
   () => async (dispatch: (action: DispatchObject) => void) => {
     try {
-      const response = await fetch('/assets/data/locations.json');
+      const response = await fetch('../locations.json');
       const locations = await response.json();
       dispatch(setLocations(locations));
     } catch (error) {

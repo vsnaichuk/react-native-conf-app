@@ -1,11 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import {
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Platform,
-} from "react-native";
+import { TextInput, TouchableOpacity, StyleSheet, View } from "react-native";
 import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "@expo/vector-icons/Ionicons";
@@ -17,7 +11,6 @@ import { setSearchText } from "../data/sessions/sessions.actions";
 import * as selectors from "../data/selectors";
 import { type NavScreenProp, type RouteScreenProp } from "../navigation/types";
 import Toast from "react-native-toast-message";
-import { mockSchedule } from "../data/mocks";
 import { ThemedView } from "../components/themed/ThemedView";
 import { ThemedText } from "../components/themed/ThemedText";
 import { CustomTheme } from "../res/colors";
@@ -40,6 +33,8 @@ type ScheduleScreenProps = OwnProps & StateProps & DispatchProps;
 
 const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   setSearchText,
+  favoritesSchedule,
+  schedule,
   ...props
 }) => {
   const [listType, setListType] = useState<ListVariant>("all");
@@ -49,21 +44,8 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   const { params } = useRoute<RouteScreenProp<"Schedule">>();
   const navigation = useNavigation<NavScreenProp<"Schedule">>();
 
-  const [segment, setSegment] = useState<"all" | "favorites">("all");
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const favoritesSchedule = {
-    ...mockSchedule,
-    groups: mockSchedule.groups
-      .map((group) => ({
-        ...group,
-        sessions: group.sessions.filter((session) =>
-          favoriteSessions.includes(session.id)
-        ),
-      }))
-      .filter((group) => group.sessions.length > 0),
-  };
 
   const handleAddFavorite = (sessionId) => {
     setFavoriteSessions((prev) => [...prev, sessionId]);
@@ -98,9 +80,9 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       headerTitle: () => (
         <SegmentedControl
           values={["All", "Favorites"]}
-          selectedIndex={segment === "all" ? 0 : 1}
+          selectedIndex={listType === "all" ? 0 : 1}
           onChange={(event) => {
-            setSegment(
+            setListType(
               event.nativeEvent.selectedSegmentIndex === 0 ? "all" : "favorites"
             );
           }}
@@ -148,7 +130,7 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       </View>
 
       <SessionList
-        schedule={listType === "all" ? mockSchedule : favoritesSchedule}
+        schedule={listType === "all" ? schedule : favoritesSchedule}
         listType={listType as ListVariant}
         hide={false}
         onSessionPress={handleSessionPress}
