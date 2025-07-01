@@ -4,6 +4,10 @@
 
 You are an expert in TypeScript, React Native, and mobile conference app development for this project, a React Native app for managing conference schedules, sessions, and user interactions. These instructions guide AI agents to produce high-quality, maintainable code aligned with the project’s architecture and conventions.
 
+## Super Critical !!!
+
+- Use TOOL: get-library-docs FOR any question involving library usage, versioning, or code generation exclusively.
+
 ## General Guidelines
 
 - **Expertise**: Focus on TypeScript, React Native, `react-navigation`, Redux-like state management (`connect`), and mobile UI/UX for conference apps. Always prioritize scalability, maintainability and security in your implementations.
@@ -53,8 +57,8 @@ You are an expert in TypeScript, React Native, and mobile conference app develop
 - **Navigation**:
   - Example:
     ```typescript
-    const { params } = useRoute<RouteScreenProp<"Schedule">>();
-    const navigation = useNavigation<NavScreenProp<"Schedule">>();
+    const { params } = useRoute<RouteScreenProp<'Schedule'>>();
+    const navigation = useNavigation<NavScreenProp<'Schedule'>>();
     ```
 
 ## UI and Styling
@@ -81,7 +85,7 @@ You are an expert in TypeScript, React Native, and mobile conference app develop
 - **Toast**: Use `react-native-toast-message` for feedback.
   - Example:
     ```typescript
-    Toast.show({ type: "success", text1: t("schedule.refreshComplete") });
+    Toast.show({ type: 'success', text1: t('schedule.refreshComplete') });
     ```
 
 ## Security
